@@ -36,3 +36,15 @@ so, 让我们从一个最简单的例子开始讲起: 设想我们在开发一�
 请大家先试一试，看看能不能找到答案（只需要一个从文件获取配置的函数功能），我们将在下一节课揭晓。
 
 ### How to Search
+
+我们是如何确定搜索关键字？首先既然是用 nodejs，那么我们自然应该用 `nodejs` 限定查询范围。
+然后想想这个函数功能如果用英文该怎么说来着，是不是应该叫`load configuration file`.
+所以我们第一时间想到的搜索关键字是`nodejs load configuration file`.
+
+在 [Google](https://www.google.com) 搜索它,发现：
+
+* https://github.com/lorenwest/node-config
+* https://github.com/indexzero/nconf
+* https://www.npmjs.com/package/app-config
+
+大家觉得哪一个会是我们要的功能？还是我们还需要继续搜索，构造更好的搜索关键字？
