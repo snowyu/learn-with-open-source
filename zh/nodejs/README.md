@@ -41,10 +41,49 @@ so, 让我们从一个最简单的例子开始讲起: 设想我们在开发一�
 然后想想这个函数功能如果用英文该怎么说来着，是不是应该叫`load configuration file`.
 所以我们第一时间想到的搜索关键字是`nodejs load configuration file`.
 
-在 [Google](https://www.google.com) 搜索它,发现：
+在 [Google](https://www.google.com) 搜索它,我们可以发现：
 
 * https://github.com/lorenwest/node-config
 * https://github.com/indexzero/nconf
 * https://www.npmjs.com/package/app-config
 
 大家觉得哪一个会是我们要的功能？还是我们还需要继续搜索，构造更好的搜索关键字？
+
+#### Search Result
+
+让我们先看看前面搜寻到这三个项目, 去他们的站点了解其功能吧:
+
+1. [node-config](https://github.com/lorenwest/node-config):
+  > Node-config organizes hierarchical configurations for your app deployments.
+  > It lets you define a set of default parameters, and extend them for different deployment environments (development, qa, staging, production, etc.).
+  > Configurations are stored in configuration files within your application, and can be overridden and extended by environment variables, command line parameters, or external sources.
+  > Example:
+  >  if (config.has('optionalFeature.detail'))
+  >    var detail = config.get('optionalFeature.detail')
+2. [nconf](https://github.com/indexzero/nconf):
+  > Hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging.
+  > Example:
+  >  nconf.argv()
+  > .env()
+  > .file({ file: 'path/to/config.json' });
+3. [app-config](https://www.npmjs.com/package/app-config):
+  > Simply prepare your configuration files and call require('app-config'). Available configurations and environments are determined dynamically, based on your directory and file structures.
+  > Example:
+  > write your config in: /app_root/config/dev/db.js
+  > console.log('DB URL:', config.db.hostname + ':' + config.db.port);
+
+
+不难发现，这三个做得太多了，没有我们只想要的纯碎的配置文件读入。那么到底我们只能参考这些项目，还是
+我们没有搜索到，注意到所有这些项目都是发布到npm上的之后，或许我们应该换个搜索关键字试一试，
+将 `nodejs` 替换为 `npm`： `npm load config file`，在[Google](https://www.google.com/search?q=npm+load+config+file)中搜索之。
+
+
+* load-config-file - npm
+  https://www.npmjs.com/package/load-config-file
+
+哈，第一个搜索结果似乎就是！进去看看：
+
+> Load the config file as a plain object. The config file format can be registered. The registered file format order is the search order.
+
+果不其然，就是它了！读入指定的配置文件作为 plain object，并可以通过注册配置文件格式的方式支持不同
+格式的配置文件，同时支持异步或同步方式读入。
