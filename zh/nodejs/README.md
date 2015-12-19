@@ -87,3 +87,86 @@ so, 让我们从一个最简单的例子开始讲起: 设想我们在开发一�
 
 果不其然，就是它了！读入指定的配置文件作为 plain object，并可以通过注册配置文件格式的方式支持不同
 格式的配置文件，同时支持异步或同步方式读入。
+
+
+### Found: load-config-file
+
+那么代码质量如何？通过阅读 [README](https://github.com/snowyu/load-config-file.js) 的描述，
+可以看到有持续集成，测试代码覆盖率100%，代码质量评分4.0（最高等级），看来还算放心。
+
+那么如何使用，通过提供的示例:
+
+
+```js
+var loadConfig = require('load-config-file');
+var yaml  = require('js-yaml');
+var cson  = require('cson');
+
+loadConfig.register(['.yaml', '.yml'], yaml.safeLoad);
+loadConfig.register('.cson', cson.parseCSONString.bind(cson));
+loadConfig.register('.json', JSON.parse);
+
+//Synchronously load config from file.
+//it will search config.yaml, config.yml, config.cson, config.json
+//the first exist file will be loaded.
+//the default encoding is "utf8" if no encoding.
+//loadConfig('config', {encoding: 'ascii'})
+//the non-enumerable "$cfgPath" property added.
+console.log(loadConfig('config'));
+
+//Asynchronously load config from file
+loadConfig('config', function(err, result){
+  if (err) {
+    console.log('error:', err);
+  } else {
+    console.log(result);
+  }
+})
+```
+
+我们了解到在使用前，首先要对配置文件格式的进行注册，然后才可以使用，还算简单:
+
+```js
+loadConfig.register(['.yaml', '.yml'], yaml.safeLoad);
+```
+
+看函数的调用参数，猜测第一个参数是注册的配置文件扩展名，第二个参数是配置文件的分析器(parser)函数。
+那么这个parser函数传入的应该是字符串内容并返回解析后的 plain object。
+
+看示例，`loadConfig` 函数同时支持异步或同步执行，当函数调用的时候，参数最后存在回调参数的时候为
+异步执行。
+
+那么用 `yaml` 配置格式，做个简单的测试:
+
+```bash
+mkdir conf-test
+cd conf-test
+npm -y init
+npm install js-yaml load-config-file
+cat << 'EOF' >> config.yml
+num: 123
+str: 'hi world'
+lst:
+  - list-1
+  - list-2
+EOF
+```
+
+测试读入`config.yml`:
+
+```js
+var loadConfig = require('load-config-file');
+var yaml = require('js-yaml');
+
+loadConfig.register(['.yaml', '.yml'], yaml.safeLoad);
+console.log(loadConfig('config'));
+```
+
+终端输出结果应该是:
+
+```js
+{ num: 123, str: 'hi world', lst: [ 'list-1', 'list-2' ] }
+```
+
+
+作为使用，这似乎就足矣。
